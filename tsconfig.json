@@ -18,9 +18,10 @@
       "@test/*": ["./__test__/*"],
       "@pages/*": ["./src/pages/*"],
       "@styles/*": ["./src/styles/*"],
+      "@components/*": ["./src/components/*"],
       "@api/*": ["./src/libs/api/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.setup.ts"],
   "exclude": ["node_modules"]
 }
