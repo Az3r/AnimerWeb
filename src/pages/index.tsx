@@ -4,22 +4,17 @@ import { useCookies } from 'react-cookie';
 
 export default function HomePage(): JSX.Element {
   const [cookies, setCookie] = useCookies(['theme']);
-  const [toggleDarkTheme, setToggleDarkTheme] = React.useState(
-    cookies.theme === 'dark'
-  );
   return (
     <Container>
-      <Switch value={toggleDarkTheme} onChange={onThemeChanged} />
+      <Switch checked={cookies.theme === 'dark'} onChange={onThemeChanged} />
       <Button variant="contained" color="primary">
         I am a button
       </Button>
     </Container>
   );
 
-  function onThemeChanged() {
-    const dark = !toggleDarkTheme;
-    const theme = dark ? 'dark' : 'light';
+  function onThemeChanged(event: React.ChangeEvent<HTMLInputElement>) {
+    const theme = event.target.checked ? 'dark' : 'light';
     setCookie('theme', theme);
-    setToggleDarkTheme(dark);
   }
 }
