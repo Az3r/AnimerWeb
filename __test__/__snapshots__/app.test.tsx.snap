@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should App tree not changed 1`] = `
+<p
+  class="MuiTypography-root MuiTypography-body1"
+>
+  Hello
+</p>
+`;
