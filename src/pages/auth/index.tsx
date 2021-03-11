@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import createToken from '@utils/oauth';
+import { authenticate } from '@services/api';
 
 export default function Authentication() {
   return (
@@ -10,12 +11,10 @@ export default function Authentication() {
   );
 }
 
-async function authorize() {
-  const responseType = '?response_type=code';
-  const clientID = `&client_id=${process.env.NEXT_PUBLIC_MAL_CLIENT_ID}`;
-  const codeChallenge = `&code_challenge=${createToken()}`;
-  const state = `&state=${createToken()}`;
-
-  const url = `https://myanimelist.net/v1/oauth2/authorize${responseType}${clientID}${codeChallenge}${state}`;
-  window.open(url, '_blank', 'noopener,noreferrer');
+function authorize() {
+  authenticate.authorize(
+    process.env.NEXT_PUBLIC_MAL_CLIENT_ID as string,
+    createToken(),
+    createToken()
+  );
 }
