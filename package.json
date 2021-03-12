@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext .js,.ts,.tsx",
+    "emulator": "cd firebase && firebase emulators:start",
     "test": "jest __test__/*",
-    "test:firebase": "jest firebase/__test__/*",
+    "test:firebase": "jest firebase/__test__/* --env=node",
     "test:full": "jest"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "@babel/preset-env": "^7.13.9",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.13.0",
+    "@firebase/rules-unit-testing": "^1.2.4",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@types/jest": "^26.0.20",

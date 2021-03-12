@@ -3,4 +3,6 @@ export const collections = {
   sessions: 'sessions',
 };
 
-export const a = 5;
+export const keys = {
+  project: 'my-anime-list-b213d',
+};
