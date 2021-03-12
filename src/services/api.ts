@@ -1,5 +1,7 @@
 import qs from 'qs';
 import { create } from 'apisauce';
+import { auth } from '@services/firebase';
+import { AccessTokenResponse } from './interfaces';
 
 const dataApi = create({
   baseURL: 'https://api.myanimelist.net/v2',
@@ -13,7 +15,7 @@ const dataApi = create({
 const authApi = create({
   baseURL: ' https://myanimelist.net/v1/oauth2/',
   headers: {
-    'Content-Type': 'application/x-www.form-urlencoded',
+    'Content-Type': 'application/x-www-form-urlencoded',
   },
   timeout: 30000,
 });
@@ -33,13 +35,11 @@ const authenticate = {
     };
 
     const response = await authApi.post('/token', qs.stringify(data));
-    if (response.ok) {
-      return response.data;
-    }
-    return Promise.reject(response);
+    if (response.ok) return response.data as AccessTokenResponse;
+    return Promise.reject(response.data);
   },
 
-  authorize: (
+  authorize: async (
     clientId: string,
     codeChallenge: string,
     state: string,
@@ -51,10 +51,19 @@ const authenticate = {
       code_challenge: codeChallenge,
       state,
     };
-    const url = `${authApi.getBaseURL()}authorize?${qs.stringify(data)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    // store authorization token
+    try {
+      await auth.create(state, codeChallenge, codeChallenge);
+      // open new window for user's authorization
+      const url = `${authApi.getBaseURL()}authorize?${qs.stringify(data)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
+
+/** response data from calling authApi.post('/token) */
 
 export { authenticate };
 export default dataApi;
