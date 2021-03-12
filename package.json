@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext .js,.ts,.tsx",
-    "test": "jest __test__",
-    "test:firebase": "jest firebase"
+    "test": "jest __test__/*",
+    "test:firebase": "jest firebase/__test__/*",
+    "test:full": "jest"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
