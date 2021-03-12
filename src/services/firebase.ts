@@ -36,7 +36,7 @@ export const auth = {
   ) => {
     await firebase
       .firestore()
-      .collection(collections.authorization)
+      .collection(collections.auth)
       .doc(state)
       .set({
         codeVerifier,
@@ -52,7 +52,7 @@ export const auth = {
   get: async (state: string) => {
     const snapshot = await firebase
       .firestore()
-      .collection(collections.authorization)
+      .collection(collections.auth)
       .doc(state)
       .get();
 

@@ -1,11 +1,16 @@
+/**
+ * @jest-environment node
+ */
+
 import {
   clearFirestoreData,
   assertFails,
   initializeTestApp,
   apps,
+  assertSucceeds,
 } from '@firebase/rules-unit-testing';
 import crypto from 'crypto-random-string';
-import { keys } from '@utils/constants';
+import { keys, collections } from '@utils/constants';
 
 beforeEach(async () => {
   await clearFirestoreData({ projectId: keys.project });
@@ -21,6 +26,13 @@ test('should not allow access to arbitrary collection except specified ones', as
   const document = crypto({ length: random() });
   const reference = database.collection(collection).doc(document);
   await assertFails(reference.get());
+});
+
+test('should allow access to specific collections', async () => {
+  const { auth } = collections;
+  const database = firestore();
+  const document = crypto({ length: random() });
+  await assertSucceeds(database.collection(auth).doc(document).get());
 });
 
 /** generate random integer number between min and max inclusive */

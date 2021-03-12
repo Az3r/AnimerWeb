@@ -1,6 +1,5 @@
 export const collections = {
-  authorization: 'authorization',
-  sessions: 'sessions',
+  auth: 'auths',
 };
 
 export const keys = {
