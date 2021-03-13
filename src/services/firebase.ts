@@ -20,7 +20,14 @@ if (firebase.apps.length === 0) {
   }
 }
 
-export const auth = {
+/** manage user's authorization in firestore */
+class FirestoreAuth {
+  private firestore: firebase.firestore.Firestore;
+
+  constructor(firestore?: firebase.firestore.Firestore) {
+    this.firestore = firestore || firebase.firestore();
+  }
+
   /**
    * store user's authorization token
    * @param state unique token used to retrieve code verifier and code challenge
@@ -28,14 +35,13 @@ export const auth = {
    * @param codeChallenge 128-character base64-url encoded string
    * @param token user's access token
    */
-  create: async (
+  async create(
     state: string,
     codeVerifier: string,
     codeChallenge: string,
     token?: AccessTokenResponse
-  ) => {
-    await firebase
-      .firestore()
+  ) {
+    await this.firestore
       .collection(collections.auth)
       .doc(state)
       .set({
@@ -43,22 +49,23 @@ export const auth = {
         codeChallenge,
         ...token,
       });
-  },
+  }
+
   /**
    * retrieve user's authorization token
    * @param state unique token used to retrieve code verifier and code challenge
    * @returns code verifier and code challenge
    */
-  get: async (state: string) => {
-    const snapshot = await firebase
-      .firestore()
+  async get(state: string) {
+    const snapshot = await this.firestore
       .collection(collections.auth)
       .doc(state)
       .get();
 
     if (snapshot.exists) return snapshot.data() as AuthDocument;
     return Promise.reject(new Error('document does not exist'));
-  },
-};
+  }
+}
 
 export default firebase;
+export { FirestoreAuth };

@@ -17,14 +17,25 @@ logger.configure({
     development: {
       type: 'stdout',
     },
+    api: {
+      type: 'file',
+      filename: 'logs/api.log',
+      maxLogSize: 1000,
+      compress: true,
+    },
   },
   categories: {
     default: {
       appenders: ['development'],
       level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     },
+    api: {
+      appenders: ['api'],
+      level: 'info',
+    },
   },
 });
 
 const log = logger.getLogger();
 export default log;
+export const apiLog = logger.getLogger('api');

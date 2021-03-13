@@ -14,7 +14,9 @@ export default async function handler(
     const { codeVerifier } = await auth.get(state);
     const token = await authenticate.token(code, codeVerifier);
     await auth.create(state, codeVerifier, codeVerifier, token);
-    response.status(200).json({ message: 'saved token successfully' });
+    response.status(200).json({
+      access_token: token.access_token,
+    });
   } catch (error) {
     log.error(error);
     response.status(500).json({ error });

@@ -1,7 +1,8 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import createToken from '@utils/oauth';
-import { authenticate } from '@services/api';
+import { AuthApi, createAuthApi } from '@services/api';
+import { FirestoreAuth } from '@services/firebase';
 
 export default function Authentication() {
   return (
@@ -12,9 +13,6 @@ export default function Authentication() {
 }
 
 function authorize() {
-  authenticate.authorize(
-    process.env.NEXT_PUBLIC_MAL_CLIENT_ID as string,
-    createToken(),
-    createToken()
-  );
+  const api = new AuthApi(createAuthApi(), new FirestoreAuth());
+  api.authorize(createToken(), createToken());
 }
