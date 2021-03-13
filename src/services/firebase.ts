@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import 'firebase/firestore';
 import { collections } from '@utils/constants';
-import { AccessTokenResponse, AuthDocument } from './interfaces';
+import { AccessTokenResponse, AuthDocument } from '@interfaces/services';
 
 const config = {
   apiKey: 'AIzaSyBF08IhBpfeZNwydxeEDgC3SPj34tV3fJw',
