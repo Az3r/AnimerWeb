@@ -1,7 +1,7 @@
 import qs from 'qs';
 import { create } from 'apisauce';
 import { auth } from '@services/firebase';
-import { AccessTokenResponse } from './interfaces';
+import { AccessTokenResponse } from '@interfaces/services';
 
 const dataApi = create({
   baseURL: 'https://api.myanimelist.net/v2',
@@ -52,18 +52,12 @@ const authenticate = {
       state,
     };
     // store authorization token
-    try {
-      await auth.create(state, codeChallenge, codeChallenge);
-      // open new window for user's authorization
-      const url = `${authApi.getBaseURL()}authorize?${qs.stringify(data)}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-    } catch (error) {
-      console.error(error);
-    }
+    await auth.create(state, codeChallenge, codeChallenge);
+    // open new window for user's authorization
+    const url = `${authApi.getBaseURL()}authorize?${qs.stringify(data)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   },
 };
-
-/** response data from calling authApi.post('/token) */
 
 export { authenticate };
 export default dataApi;

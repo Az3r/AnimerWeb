@@ -1,6 +1,30 @@
 import logger from 'log4js';
 
-const log = logger.getLogger();
-log.level = process.env.NODE_ENV === 'production' ? 'info' : 'debug';
+logger.configure({
+  appenders: {
+    firebase: {
+      type: 'file',
+      filename: 'logs/firebase.log',
+      maxLogSize: 1000000000,
+    },
+    all: {
+      type: 'file',
+      filename: 'logs/all.log',
+      maxLogSize: 1000,
+      backups: 3,
+      compress: true,
+    },
+    development: {
+      type: 'stdout',
+    },
+  },
+  categories: {
+    default: {
+      appenders: ['development'],
+      level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    },
+  },
+});
 
+const log = logger.getLogger();
 export default log;

@@ -1,7 +1,6 @@
 import { auth } from '@services/firebase';
 import { authenticate } from '@services/api';
 import { NextApiRequest, NextApiResponse } from 'next';
-import home from '@utils/urls';
 import log from '@utils/logging';
 
 export default async function handler(
@@ -15,7 +14,7 @@ export default async function handler(
     const { codeVerifier } = await auth.get(state);
     const token = await authenticate.token(code, codeVerifier);
     await auth.create(state, codeVerifier, codeVerifier, token);
-    response.redirect(200, `${home}`);
+    response.status(200).json({ message: 'saved token successfully' });
   } catch (error) {
     log.error(error);
     response.status(500).json({ error });
