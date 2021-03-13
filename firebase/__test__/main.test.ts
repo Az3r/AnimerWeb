@@ -35,6 +35,22 @@ test('should allow access to specific collections', async () => {
   await assertSucceeds(database.collection(auth).doc(document).get());
 });
 
+describe('authorization collection', () => {
+  test('should not be modifiable if document already had an "access_token" field', async () => {
+    const database = firestore();
+    const document = database.collection(collections.auth).doc();
+    await assertSucceeds(document.set({ access_token: 'crypted_token' }));
+    await assertFails(document.set({ random_field: 'random value' }));
+  });
+
+  test('should be able to delete document without any conditions', async () => {
+    const database = firestore();
+    const document = database.collection(collections.auth).doc();
+    await assertSucceeds(document.set({ access_token: 'crypted_token' }));
+    await assertSucceeds(document.delete());
+  });
+});
+
 /** generate random integer number between min and max inclusive */
 function random(min = 1, max = 100) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
