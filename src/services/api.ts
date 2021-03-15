@@ -1,6 +1,5 @@
 import qs from 'qs';
 import { ApisauceInstance, create } from 'apisauce';
-import { FirestoreAuth } from '@services/firebase';
 import { AccessTokenResponse } from '@interfaces/services';
 
 const createDataApi = () =>
@@ -24,14 +23,7 @@ const createAuthApi = () =>
 
 /** an api instance used for MAL authorization endpoint */
 class AuthApi {
-  api: ApisauceInstance;
-
-  firestoreAuth: FirestoreAuth;
-
-  constructor(api: ApisauceInstance, firestoreAuth: FirestoreAuth) {
-    this.api = api;
-    this.firestoreAuth = firestoreAuth;
-  }
+  constructor(readonly api: ApisauceInstance) {}
 
   /**
    *
@@ -65,8 +57,7 @@ class AuthApi {
       code_challenge: codeChallenge,
       state,
     };
-    // store authorization token
-    await this.firestoreAuth.create(state, codeChallenge, codeChallenge);
+
     // open new window for user's authorization
     const url = `${this.api.getBaseURL()}authorize?${qs.stringify(data)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
