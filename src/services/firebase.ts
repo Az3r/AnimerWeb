@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import 'firebase/firestore';
 import { collections } from '@utils/constants';
-import { AccessTokenResponse, AuthDocument } from '@interfaces/services';
+import { AccessTokenResponse, AuthDocument } from '@services/interfaces';
 
 const config = {
   apiKey: 'AIzaSyBF08IhBpfeZNwydxeEDgC3SPj34tV3fJw',
@@ -15,7 +15,7 @@ const config = {
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp(config);
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     firebase.firestore().useEmulator('localhost', 8080);
   }
 }
@@ -29,26 +29,29 @@ class FirestoreAuth {
   }
 
   /**
-   * store user's authorization token
+   * create user's initial authorization process
    * @param state unique token used to retrieve code verifier and code challenge
    * @param codeVerifier 128-character base64-url encoded string
    * @param codeChallenge 128-character base64-url encoded string
-   * @param token user's access token
    */
-  async create(
-    state: string,
-    codeVerifier: string,
-    codeChallenge: string,
-    token?: AccessTokenResponse
-  ) {
+  async create(state: string, codeVerifier: string, codeChallenge: string) {
+    await this.firestore.collection(collections.auth).doc(state).set({
+      codeVerifier,
+      codeChallenge,
+    });
+  }
+
+  /**
+   * add access token to current authorization process,
+   * will fail if doucment already had an access_token field
+   * @param state unique token for each authorization process
+   * @param token the access token retrieved from MAL authorization process
+   */
+  async update(state: string, token: AccessTokenResponse) {
     await this.firestore
       .collection(collections.auth)
       .doc(state)
-      .set({
-        codeVerifier,
-        codeChallenge,
-        ...token,
-      });
+      .set(token, { merge: true });
   }
 
   /**

@@ -4,8 +4,12 @@
 import { createToken } from '@utils/oauth';
 import { AuthApi, createAuthApi } from '@services/api';
 import MockAdapter from 'axios-mock-adapter';
-import { AccessTokenResponse } from '@interfaces/services';
 import { randomInt, randomString } from '@utils/testing';
+import { FirestoreAuth } from '@services/firebase';
+import { initializeTestApp } from '@firebase/rules-unit-testing';
+import { keys } from '@utils/constants';
+import { AccessTokenResponse } from '@services/interfaces';
+import { updateUserAuth } from '@pages/callback/auth';
 
 test('should be base64-url encoded', () => {
   const token = createToken();
@@ -24,7 +28,28 @@ test('should receive AccessTokenResponse object', async () => {
   expect(data).toMatchObject(response);
 });
 
-test('should update auth document after receive access token', async () => {});
+test('should update auth document', async () => {
+  // store user's token
+  const token = accessTokenResponse();
+  const state = createToken();
+  const code = createToken();
+  const result = {
+    ...token,
+    codeChallenge: createToken(),
+    codeVerifier: createToken(),
+  };
+  const firestore = new FirestoreAuth(
+    initializeTestApp({ projectId: keys.project }).firestore()
+  );
+  await firestore.create(state, result.codeVerifier, result.codeChallenge);
+
+  const { api, mockAxios } = mockAuthApi();
+  mockAxios.onPost('/token').reply(200, token);
+
+  await updateUserAuth(state, code, firestore, api);
+  const data = await firestore.get(state);
+  expect(data).toMatchObject(result);
+});
 
 function accessTokenResponse(): AccessTokenResponse {
   return {

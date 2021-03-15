@@ -17,6 +17,7 @@
     "paths": {
       "@test/*": ["./__test__/*"],
       "@pages/*": ["./src/pages/*"],
+      "@api/*": ["./src/pages/api/*"],
       "@styles/*": ["./src/styles/*"],
       "@components/*": ["./src/components/*"],
       "@services/*": ["./src/services/*"],

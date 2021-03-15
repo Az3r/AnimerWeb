@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { ApisauceInstance, create } from 'apisauce';
-import { AccessTokenResponse } from '@interfaces/services';
+import { AccessTokenResponse } from '@services/interfaces';
 
 const createDataApi = () =>
   create({
@@ -23,7 +23,12 @@ const createAuthApi = () =>
 
 /** an api instance used for MAL authorization endpoint */
 class AuthApi {
-  constructor(readonly api: ApisauceInstance) {}
+  readonly api: ApisauceInstance;
+
+  constructor(api?: ApisauceInstance) {
+    if (api) this.api = api;
+    else this.api = createAuthApi();
+  }
 
   /**
    *

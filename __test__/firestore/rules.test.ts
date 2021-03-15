@@ -3,22 +3,12 @@
  */
 
 import {
-  clearFirestoreData,
   assertFails,
   initializeTestApp,
-  apps,
   assertSucceeds,
 } from '@firebase/rules-unit-testing';
 import crypto from 'crypto-random-string';
 import { keys, collections } from '@utils/constants';
-
-beforeEach(async () => {
-  await clearFirestoreData({ projectId: keys.project });
-});
-
-afterAll(async () => {
-  await Promise.all(apps().map((app) => app.delete()));
-});
 
 test('should not allow access to arbitrary collection except specified ones', async () => {
   const database = firestore();
