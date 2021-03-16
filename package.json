@@ -8,9 +8,8 @@
     "start": "next start",
     "lint": "eslint --ext .js,.ts,.tsx",
     "emulator": "cd firebase && firebase emulators:start",
-    "test": "jest __test__/* --testPathIgnorePatterns=firestore/*",
-    "test:firebase": "jest ./__test__/firestore/* --env=node",
-    "test:full": "jest"
+    "test:ci": "cd firebase && firebase emulators:exec 'npm test'",
+    "test": "jest"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -60,7 +59,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "npm run test"
+      "pre-push": "npm run test:ci"
     }
   },
   "lint-staged": {

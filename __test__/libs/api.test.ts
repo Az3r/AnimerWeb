@@ -2,14 +2,13 @@
  * @jest-environment node
  */
 import { createToken } from '@utils/oauth';
-import { FirestoreAuth } from '@services/firebase';
 import { updateUserAuth } from '@pages/callback/auth';
 import {
   randomInt,
   randomString,
   randomAccessTokenResponse,
   createMockAuthApi,
-  firestore,
+  createMockFirestoreAuth,
 } from '@__test__/utils';
 
 test('should be base64-url encoded', () => {
@@ -70,7 +69,7 @@ test('should update auth document', async () => {
     codeChallenge: createToken(),
     codeVerifier: createToken(),
   };
-  const database = new FirestoreAuth(firestore());
+  const database = createMockFirestoreAuth();
   await database.create(state, result.codeVerifier, result.codeChallenge);
 
   const { api, mockAxios } = createMockAuthApi();
