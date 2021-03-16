@@ -7,10 +7,7 @@ service cloud.firestore {
     }
 
     match /auths/{auth} {
-      allow read: if true;
-      allow create: if true;
-      allow delete: if true;
-      allow update: if !resource.data.keys().hasAny(['access_token']);
+      allow read, write: if true
     }
   }
 }
