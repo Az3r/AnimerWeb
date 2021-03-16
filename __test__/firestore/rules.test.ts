@@ -26,16 +26,10 @@ test('should allow access to specific collections', async () => {
 });
 
 describe('authorization collection', () => {
-  test('should not be modifiable if document already had an "access_token" field', async () => {
+  test('should read and write auths collections', async () => {
     const database = firestore();
     const document = database.collection(collections.auth).doc();
-    await assertSucceeds(document.set({ access_token: 'crypted_token' }));
-    await assertFails(document.set({ random_field: 'random value' }));
-  });
-
-  test('should be able to delete document without any conditions', async () => {
-    const database = firestore();
-    const document = database.collection(collections.auth).doc();
+    await assertSucceeds(document.get());
     await assertSucceeds(document.set({ access_token: 'crypted_token' }));
     await assertSucceeds(document.delete());
   });
