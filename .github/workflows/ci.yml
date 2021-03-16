@@ -4,8 +4,8 @@ on:
       - main  
 
 jobs:
-  test_deploy:
-    name: lint and test project then deploy it to vercel
+  web_app:
+    name: test and deploy web app to vercel
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -28,4 +28,16 @@ jobs:
           vercel-args: '--prod' #Optional
           vercel-org-id: ${{ secrets.ORG_ID}}  #Required
           vercel-project-id: ${{ secrets.PROJECT_ID}} #Required 
+  firestore_rules:
+    name: deploy firestore rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy to firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
 
