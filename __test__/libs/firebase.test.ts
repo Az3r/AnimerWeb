@@ -22,13 +22,13 @@ describe('FirebaseAuth', () => {
     const task = database.collection(collections.auth).doc(state).get();
     await assertSucceeds(task);
     const document = await task;
-    expect(document.data()).toMatchObject({
+    expect(document.data()).toEqual({
       codeChallenge,
       codeVerifier,
     });
   });
 
-  test('should update if document does not have access_token field', async () => {
+  test('should fields merged', async () => {
     const { state, codeChallenge, codeVerifier, token } = randomData();
 
     const database = firestore();
@@ -39,7 +39,7 @@ describe('FirebaseAuth', () => {
     const task = database.collection(collections.auth).doc(state).get();
     await assertSucceeds(task);
     const document = await task;
-    expect(document.data()).toMatchObject({
+    expect(document.data()).toEqual({
       codeChallenge,
       codeVerifier,
       ...token,
