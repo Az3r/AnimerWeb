@@ -5,11 +5,7 @@
     "^@services(.*)$": ["<rootDir>/src/services$1"],
     "^@utils(.*)$": ["<rootDir>/src/utils$1"],
     "^@api(.*)$": ["<rootDir>/src/pages/api$1"],
-    "^@pages(.*)$": ["<rootDir>/src/pages$1"]
-  },
-  "coveragePathIgnorePatterns": [
-    "<rootDir>/.next/",
-    "<rootDir>/node_modules/",
-    "<rootDir>/firebase/"
-  ]
+    "^@pages(.*)$": ["<rootDir>/src/pages$1"],
+    "^@__test__(.*)$": ["<rootDir>/__test__$1"]
+  }
 }
