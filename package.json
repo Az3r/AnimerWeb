@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext .js,.ts,.tsx",
-    "emulator": "cd firebase && firebase emulators:start",
-    "test:ci": "cd firebase && firebase emulators:exec 'npm test'",
+    "emulator": "firebase emulators:start",
+    "test:ci": "firebase emulators:exec 'npm test'",
     "test": "jest"
   },
   "dependencies": {
