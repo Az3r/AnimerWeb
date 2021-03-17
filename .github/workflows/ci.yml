@@ -31,9 +31,6 @@ jobs:
   firestore_rules:
     name: deploy firestore rules
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./firebase
     steps:
       - uses: actions/checkout@v2
       - name: deploy to firebase
